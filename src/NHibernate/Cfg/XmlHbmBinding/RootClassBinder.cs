@@ -198,14 +198,19 @@ namespace NHibernate.Cfg.XmlHbmBinding
 			var simpleValue = new SimpleValue(table);
 			new TypeBinder(simpleValue, Mappings).Bind(versionSchema.type);
 			new ColumnsBinder(simpleValue, Mappings).Bind(versionSchema.Columns, false,
-			                                              () =>
-			                                              new HbmColumn
-			                                              	{name = mappings.NamingStrategy.PropertyToColumnName(propertyName)});
+			                                              () => new HbmColumn { name = propertyName == null ? RootClass.DefaultVersionColumnName : mappings.NamingStrategy.PropertyToColumnName(propertyName) });
 
 			if (!simpleValue.IsTypeSpecified)
 				simpleValue.TypeName = NHibernateUtil.Int32.Name;
 
 			var property = new Property(simpleValue);
+
+            if (propertyName == null)
+            {
+                versionSchema.name = string.Concat("DynamicVersion", "-", Guid.NewGuid());
+                versionSchema.access = "none";
+            }
+
 			BindProperty(versionSchema, property, inheritedMetas);
 
 			// for version properties marked as being generated, make sure they are "always"

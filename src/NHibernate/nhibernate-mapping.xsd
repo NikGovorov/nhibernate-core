@@ -1520,7 +1520,7 @@
 				<xs:element ref="meta" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element ref="column" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
-			<xs:attribute name="name" use="required" type="xs:string" />
+			<xs:attribute name="name" type="xs:string" />
 			<xs:attribute name="node" type="xs:string" />
 			<xs:attribute name="access" type="xs:string" />
 			<xs:attribute name="column" type="xs:string" />

@@ -24,6 +24,12 @@ namespace NHibernate.Mapping
 		/// <value><c>id</c> is the default column name for the Identifier.</value>
 		public const string DefaultIdentifierColumnName = "id";
 
+        /// <summary>
+        /// The default name of the column for the Version
+        /// </summary>
+        /// <value><c>id</c> is the default column name for the Version.</value>
+        public const string DefaultVersionColumnName = "version";
+
 		/// <summary>
 		/// The default name of the column for the Discriminator
 		/// </summary>

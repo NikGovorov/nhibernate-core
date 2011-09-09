@@ -3560,12 +3560,19 @@ namespace NHibernate.Persister.Entity
 			return notNull;
 		}
 
+        private bool IsOnlyNoopVersionChanged(int[] props, object entity, ISessionImplementor session)
+        {
+            return IsVersioned && props.Length == 1 && props[0] == EntityMetamodel.VersionPropertyIndex &&
+                   GetTuplizer(session).GetVersion(entity) == null;
+
+        }
+
 		public virtual int[] FindDirty(object[] currentState, object[] previousState, object entity, ISessionImplementor session)
 		{
 			int[] props = TypeHelper.FindDirty(
 				entityMetamodel.Properties, currentState, previousState, propertyColumnUpdateable, HasUninitializedLazyProperties(entity, session.EntityMode), session);
 
-			if (props == null)
+            if (props == null || IsOnlyNoopVersionChanged(props, entity, session))
 			{
 				return null;
 			}
@@ -3580,7 +3587,7 @@ namespace NHibernate.Persister.Entity
 		{
 			int[] props = TypeHelper.FindModified(
 				entityMetamodel.Properties, current, old, propertyColumnUpdateable, HasUninitializedLazyProperties(entity, session.EntityMode), session);
-			if (props == null)
+			if (props == null || IsOnlyNoopVersionChanged(props, entity, session))
 			{
 				return null;
 			}

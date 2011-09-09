@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="NHibernate.Test" namespace="NHibernate.Test.NHSpecificTest.NH2300">
+
+  <class name="Master" optimistic-lock="version">
+    <cache usage="read-write"/>
+    <id name="Id">
+      <generator class="assigned" />
+    </id>
+    <version type="int"/>
+    <property name="Name"/>
+    <bag name="Details"  inverse="true" cascade="all-delete-orphan" optimistic-lock="true">
+      <key column="Master"/>
+      <one-to-many class="Detail"/>
+    </bag>
+  </class>
+
+  <class name="Detail" optimistic-lock="version">
+    <id name="Id">
+      <generator class="assigned" />
+    </id>
+    <version name="Version"/>
+    <property name="Description"/>
+    <many-to-one name="Parent" column="Master" optimistic-lock="true"/>
+  </class>
+
+</hibernate-mapping>
